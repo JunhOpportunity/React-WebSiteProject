@@ -5,6 +5,11 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "@types/jest": "28.1.6",
+    "@types/node": "14.18.23",
+    "@types/react": "18.0.15",
+    "@types/react-dom": "18.0.6",
+    "@types/styled-components": "5.1.25",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-scripts": "4.0.0",
