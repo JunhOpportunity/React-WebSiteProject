@@ -5,6 +5,6 @@ declare module "styled-components" {
     // theme 작성
     textColor: string;
     bgColor: string;
-    btnColor: string;
+    accentColor: string;
   }
 }
