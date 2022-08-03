@@ -1,7 +1,10 @@
 import { useParams } from "react-router";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Route, Routes } from "react-router-dom";
+import Price from "./Price";
+import Chart from "./Chart";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -40,12 +43,67 @@ interface LocationState {
   };
 }
 
+interface InfoData {
+  id: string;
+  name: string;
+  symbol: string;
+  rank: number;
+  is_new: boolean;
+  is_active: boolean;
+  type: string;
+  description: string;
+  message: string;
+  open_source: boolean;
+  started_at: string;
+  development_status: string;
+  hardware_wallet: boolean;
+  proof_type: string;
+  org_structure: string;
+  hash_algorithm: string;
+  first_data_at: string;
+  last_data_at: string;
+}
+
+interface PriceData {
+  id: string;
+  name: string;
+  symbol: string;
+  rank: number;
+  circulating_supply: number;
+  total_supply: number;
+  max_supply: number;
+  beta_value: number;
+  first_data_at: string;
+  last_updated: string;
+  quotes: {
+    USD: {
+      ath_date: string;
+      ath_price: number;
+      market_cap: number;
+      market_cap_change_24h: number;
+      percent_change_1h: number;
+      percent_change_1y: number;
+      percent_change_6h: number;
+      percent_change_7d: number;
+      percent_change_12h: number;
+      percent_change_15m: number;
+      percent_change_24h: number;
+      percent_change_30d: number;
+      percent_change_30m: number;
+      percent_from_price_ath: number;
+      price: number;
+      volume_24h: number;
+      volume_24h_change_24h: number;
+    };
+  };
+}
+
 function Coin() {
   const [loading, setLoading] = useState(true);
   const { coinId } = useParams(); // useParams 쓰는 순간 type이 string or undefined
   const { state } = useLocation() as LocationState;
-  const [info, setInfo] = useState({});
-  const [priceInfo, setPriceInfo] = useState({});
+  const [info, setInfo] = useState<InfoData>({});
+  const [priceInfo, setPriceInfo] = useState<PriceData>({});
   interface InfoData {}
   interface PriceData {}
   useEffect(() => {
@@ -59,13 +117,19 @@ function Coin() {
       setInfo(infoData);
       setPriceInfo(priceData);
     })();
-  });
+  }, [coinId]);
   return (
     <Container>
       <Header>
         <Title>{state?.name || "Loading..."}</Title>
       </Header>
-      {loading ? <Loader>"Loading...."</Loader> : <span>{info.hello}</span>}
+      {loading ? <Loader>"Loading...."</Loader> : null}
+      <Link to={`/${coinId}/chart`}>Chart</Link>
+      <Link to={`/${coinId}/price`}>Price</Link>
+      <Routes>
+        <Route path="price" element={<Price />}></Route>
+        <Route path="chart" element={<Chart />}></Route>
+      </Routes>
     </Container>
   );
 }
