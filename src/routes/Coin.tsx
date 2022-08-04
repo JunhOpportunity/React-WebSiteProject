@@ -5,6 +5,8 @@ import { useLocation, Route, Routes } from "react-router-dom";
 import Price from "./Price";
 import Chart from "./Chart";
 import { Link } from "react-router-dom";
+import { fetchCoinInfo, fetchCoinTickers } from "./api";
+import { useQuery } from "@tanstack/react-query";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -99,29 +101,40 @@ interface PriceData {
 }
 
 function Coin() {
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const { coinId } = useParams(); // useParams 쓰는 순간 type이 string or undefined
   const { state } = useLocation() as LocationState;
-  const [info, setInfo] = useState<InfoData>({});
-  const [priceInfo, setPriceInfo] = useState<PriceData>({});
-  interface InfoData {}
-  interface PriceData {}
-  useEffect(() => {
-    (async () => {
-      const infoData = await (
-        await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-      ).json();
-      const priceData = await (
-        await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-      ).json();
-      setInfo(infoData);
-      setPriceInfo(priceData);
-    })();
-  }, [coinId]);
+  const [info, setInfo] = useState<InfoData>();
+  const [priceInfo, setPriceInfo] = useState<PriceData>();
+  // interface InfoData {}
+  // interface PriceData {}
+  const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
+    ["info"],
+    () => fetchCoinInfo(coinId)
+  );
+  const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
+    ["tickers"],
+    () => fetchCoinTickers(coinId)
+  );
+  // useEffect(() => {
+  //   (async () => {
+  //     const infoData = await (
+  //       await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
+  //     ).json();
+  //     const priceData = await (
+  //       await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+  //     ).json();
+  //     setInfo(infoData);
+  //     setPriceInfo(priceData);
+  //   })();
+  // }, [coinId]);
+  const loading = infoLoading || tickersLoading;
   return (
     <Container>
       <Header>
-        <Title>{state?.name || "Loading..."}</Title>
+        <Title>
+          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+        </Title>
       </Header>
       {loading ? <Loader>"Loading...."</Loader> : null}
       <Link to={`/${coinId}/chart`}>Chart</Link>
