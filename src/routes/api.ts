@@ -1,5 +1,4 @@
-const BASE_URL = `https://api.coinpaprika.com/v1`; //
-// const BASE_URL =  `https://ohlcv-api.nomadcoders.workers.dev;`
+const BASE_URL = `https://api.coinpaprika.com/v1`;
 
 export async function fetchCoins() {
   // 이 함수는 json 데이터를 반환해야 함.
