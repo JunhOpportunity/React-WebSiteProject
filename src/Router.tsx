@@ -3,8 +3,11 @@ import Chart from "./routes/Chart";
 import Price from "./routes/Price";
 import Coin from "./routes/Coin";
 import Coins from "./routes/Coins";
+// import { useOutletContext } from "react-router";
 
 function Router() {
+  // const { coinId } = useParams();
+  // const data=useOutletContext<{coinId:"coinId"} >(); // {food: "pizza"}
   return (
     <BrowserRouter>
       <Routes>
