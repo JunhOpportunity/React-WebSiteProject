@@ -7,6 +7,7 @@ import Chart from "./Chart";
 import { Link } from "react-router-dom";
 import { fetchCoinInfo, fetchCoinTickers } from "./api";
 import { useQuery } from "@tanstack/react-query";
+import { Helmet } from "react-helmet";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -121,7 +122,11 @@ interface PriceData {
   };
 }
 
-function Coin() {
+interface ICoinProps {
+  isDark: boolean;
+}
+
+function Coin({ isDark }: ICoinProps) {
   // const [loading, setLoading] = useState(true);
   const { coinId } = useParams(); // useParams 쓰는 순간 type이 string or undefined
 
@@ -134,7 +139,10 @@ function Coin() {
   );
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
     ["tickers"],
-    () => fetchCoinTickers(coinId)
+    () => fetchCoinTickers(coinId),
+    {
+      refetchInterval: 5000
+    }
   );
   const priceMatch = useMatch("/:coinId/price");
   const chartMatch = useMatch("/:coinId/chart");
@@ -163,6 +171,9 @@ function Coin() {
   const loading = infoLoading || tickersLoading;
   return (
     <Container>
+      <Helmet>
+        <title>사이트</title>
+      </Helmet>
       <Header>
         <Title>
           {/* {coinId} */}

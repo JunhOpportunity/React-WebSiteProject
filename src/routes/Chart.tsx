@@ -2,7 +2,7 @@ import { fetchCoinHistory } from "./api";
 import { useQuery } from "@tanstack/react-query";
 import ApexChart from "react-apexcharts";
 import { useOutletContext } from "react-router";
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 
 interface ChartProps {
   coinId: string;
@@ -24,7 +24,12 @@ interface IHistorical {
 // const coinId = useOutletContext<{coinId:"coinId"}>();
 // { coinId }: ChartProps
 
-function Chart() {
+interface ChartProps {
+  coinId: string;
+  isDark: boolean;
+}
+
+function Chart({ coinId, isDark }: ChartProps) {
   const { coinId } = useOutletContext<ChartProps>();
   const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
     fetchCoinHistory(coinId)
@@ -41,7 +46,7 @@ function Chart() {
             { name: "Day Close Price", data: data?.map((price) => price.close) }
           ]}
           options={{
-            theme: { mode: "dark" },
+            theme: { mode: isDark ? "dark" : "light" },
             chart: {
               height: 500,
               width: 500,

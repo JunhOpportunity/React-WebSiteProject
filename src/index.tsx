@@ -12,9 +12,7 @@ const queryClient = new QueryClient();
 root.render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={lightTheme}>
-        <App />
-      </ThemeProvider>
+      <App />
     </QueryClientProvider>
   </StrictMode>
 );
