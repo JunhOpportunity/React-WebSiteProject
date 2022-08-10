@@ -2,6 +2,8 @@ import { fetchCoinHistory } from "./api";
 import { useQuery } from "@tanstack/react-query";
 import ApexChart from "react-apexcharts";
 import { useOutletContext } from "react-router";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "./atoms";
 // import { Redirect } from "react-router-dom";
 
 interface ChartProps {
@@ -26,14 +28,14 @@ interface IHistorical {
 
 interface ChartProps {
   coinId: string;
-  isDark: boolean;
 }
 
-function Chart({ coinId, isDark }: ChartProps) {
+function Chart({}: ChartProps) {
   const { coinId } = useOutletContext<ChartProps>();
   const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
     fetchCoinHistory(coinId)
   );
+  const isDark = useRecoilValue(isDarkAtom);
 
   return (
     <div>

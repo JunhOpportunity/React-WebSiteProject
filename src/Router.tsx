@@ -5,22 +5,19 @@ import Coin from "./routes/Coin";
 import Coins from "./routes/Coins";
 // import { useOutletContext } from "react-router";
 
-interface IRouterProps {
-  toggleDark: () => void;
-  isDark: boolean;
-}
+interface IRouterProps {}
 
-function Router({ toggleDark, isDark }: IRouterProps) {
+function Router({}: IRouterProps) {
   // const { coinId } = useParams();
   // const data=useOutletContext<{coinId:"coinId"} >(); // {food: "pizza"}
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/:coinId" element={<Coin isDark={isDark} />}>
-          <Route path="chart" element={<Chart isDark={isDark} />} />
+        <Route path="/:coinId" element={<Coin />}>
+          <Route path="chart" element={<Chart />} />
           <Route path="price" element={<Price />} />
         </Route>
-        <Route path="/" element={<Coins toggleDark={toggleDark} />}></Route>
+        <Route path="/" element={<Coins />}></Route>
         <Route path="/:coinId/*" element={<Coin />} />
       </Routes>
     </BrowserRouter>

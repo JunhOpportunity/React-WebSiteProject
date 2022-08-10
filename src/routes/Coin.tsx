@@ -122,11 +122,9 @@ interface PriceData {
   };
 }
 
-interface ICoinProps {
-  isDark: boolean;
-}
+interface ICoinProps {}
 
-function Coin({ isDark }: ICoinProps) {
+function Coin({}: ICoinProps) {
   // const [loading, setLoading] = useState(true);
   const { coinId } = useParams(); // useParams 쓰는 순간 type이 string or undefined
 
